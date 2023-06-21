@@ -1,0 +1,131 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if auction.not_closed == True %}
+        <div id="text">
+            <b>лот № {{ auction.id }}: {{ auction.name }} ({{ auction.category}})</b>
+        </div>
+        <div id="text">
+            <b>Поточна ціна: {{ actual_price }}грн (Початкова цiна: {{ auction.startprice }}грн)</b>
+        </div>
+
+        <div class="flex-container" style="justify-content: space-around;">
+            <div>
+                <img src="{{ auction.photo }}" alt="{{ auction.name }}"><br>
+            </div>
+            <div class="invis">
+                {{ auction.information }}
+            </div><br><br><br>
+        </div>
+
+        {% if auction in auctions %}
+            <form action="{% url 'auction' auction.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Видалити з просмотрюваного" class="btn btn-warning">
+            </form>
+
+        {% else %}
+            <form action="{% url 'auction' auction.id %}" method="post" >
+                {% csrf_token %}
+                <input type="submit" value="Добавити в просмотрюване" class="btn btn-primary">
+            </form>
+
+        {% endif %}<br>        
+        {{ message }}<br>
+        
+        <form action="{% url 'rate' auction.id %}" method="post" class="row g-3">
+            {% csrf_token %}
+            <div div class="col-auto">
+                <input type="number" name="rate" placeholder="Оцiнка" class="form-control">
+            </div>
+            <div div class="col-auto">
+                <input type="submit" value="Добавити оцiнку" class="btn btn-primary mb-3">
+            </div>
+        </form><br>
+
+        <b>ALL USER'S RATES:</b><br><br>
+        {% for rate in rates %}
+                Користувач з нікнеймом "{{ rate.rating_user }}" поставив оцiнку:
+            <b>{{ rate.rate }}грн</b><br>
+        {% empty %}
+            Нема оцiнок<br>
+        {% endfor %}<br>
+
+        <form action="{% url 'comment' auction.id %}" method="post">
+            {% csrf_token %}
+            <div div class="form-floating">
+                <textarea name="comment" class="form-control" style="height:300px"></textarea>
+            </div><br>
+            <div class="d-grid gap-2">
+                <input type="submit" value="Добавити коментар" class="btn btn-primary">
+            </div>
+        </form><br>
+
+        <b>ALL USER'S COMMENTS:</b><br><br>
+        {% for comment in comments %}
+            <b>{{ comment.commenting_user }}: </b><br>
+            {{ comment.comment }}<br><br>
+        {% empty %}
+            Нема коментарiв<br>
+        {% endfor %}<br>
+    
+        {% if current_user == user_creator %}
+            <form action="{% url 'close' auction.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Закрити аук" class="btn btn-danger btn-lg">
+            </form>
+        {% endif %}
+
+    {% else %}
+        <div id="text">
+            <b>лот № {{ auction.id }}: {{ auction.name }} ({{ auction.category}})</b>
+        </div>
+        <div id="text">
+            <b>аук уже закритий</b>
+        </div>
+
+        <div class="flex-container" style="justify-content: space-around;">
+            <div>
+                <img src="{{ auction.photo }}" alt="{{ auction.name }}" width="660" height="500"><br>
+            </div>
+            <div class="invis">
+                {{ auction.information }}
+            </div><br><br><br>
+        </div>
+
+
+        {% if auction in auctions %}
+            <form action="{% url 'auction' auction.id %}" method="post" >
+                {% csrf_token %}
+                <input type="submit" value="Видалити зі списку спостереження" class="btn btn-warning">
+            </form>
+        {% else %}
+
+            <form action="{% url 'auction' auction.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Додати до списку спостереження" class="btn btn-primary">
+            </form>
+
+        {% endif %}<br>    
+
+        <b>Оцiнки користувачiв:</b><br>
+        {% for rate in rates %}
+                Користувач з нікнеймом "{{ rate.rating_user }}" поставив оцiнку:
+            <b>{{ rate.rate }}грн</b><br>
+        {% empty %}
+            Нема оцiнок<br>
+        {% endfor %}<br><br>
+
+        <b>Коментарi користувачiв:</b><br><br>
+        {% for comment in comments %}
+            <b>{{ comment.commenting_user }}: </b><br>
+            {{ comment.comment }}<br><br>
+        {% empty %}
+            Нема коментарiв<br>
+        {% endfor %}<br>
+
+        <div id="text" style="color:red">
+            <b>{{ message }}</b>
+        </div><br><br><br>
+    {% endif %}
+{% endblock %}

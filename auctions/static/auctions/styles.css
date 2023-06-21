@@ -1,0 +1,87 @@
+body {
+    padding: 10px;
+    background-color: white;
+}
+
+@media (min-width: 501px) {
+    .flex-container {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: flex-start;
+        flex: 100%;
+        background-color: white;
+    }
+}
+
+@media (max-width: 500px) {
+    .flex-container {
+        display: flex;
+        flex-flow: column-reverse wrap;
+        justify-content: center;
+        flex: 100%;
+        background-color: yellow;
+    }
+}
+
+@media (min-width: 501px) {
+    .flex-container > div {
+        background-color: white;
+        margin: 20px;
+        padding: 20px;
+        width: 500px;
+        height: auto;
+        border: 3px solid rgb(0, 0, 0);
+    }
+}
+
+@media (max-width: 500px) {
+    .flex-container > div {
+        background-color: white;
+        margin: 20px;
+        padding: 20px;  
+        border: 2px solid rgb(0, 0, 0);
+    }
+}
+
+h4 {
+    height: 20px;
+    color: red;
+}
+
+h5 {
+    height: 15px;
+}
+
+div > img {
+    width: 100%;
+    height: auto;
+}
+
+#text {
+    text-align: center;
+    color: darkblue;
+    text-decoration: none;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.flex-container > img {
+    width: 350px;
+    height: auto;
+}
+
+.invis {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto;
+}
+
+.grid-item {
+    text-align: center;
+}

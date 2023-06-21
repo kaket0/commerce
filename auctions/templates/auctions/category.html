@@ -1,0 +1,46 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}    
+    <h2>Активні списки категорії: {{ category }}</h2>
+    <div class="flex-container">
+        {% for list in couples_auction_price %}
+            <div class="grid-item">
+                {% if list.0.not_closed == False %}
+                    <div id="text" class="grid-item">
+                        <h4>лот № {{ list.0.id }}: {{ list.0.name }}</h4> 
+                    </div>
+                    <div id="text" class="grid-item">
+                        <h5>({{ list.0.category }})</h5>
+                    </div>
+                    <div id="text" class="grid-item">
+                        <h5>Аукціон вже не активний</h5>
+                    </div>
+                    <div class="grid-item">
+                        <img src="{{ list.0.photo }}" alt="{{ list.0.name }}" width="330" height="250"><br>
+                    </div><br>
+                    <div class="grid-item">
+                        <a href="{% url 'auction' list.0.id %}" class="btn btn-primary active" role="button" data-bs-toggle="button">Детальна інформація</a><br>
+                    </div>
+                {% else %}
+                    <div id="text" class="grid-item">
+                        <h4>лот №{{ list.0.id }}: {{ list.0.name }}</h4>
+                    </div>
+                    <div id="text" class="grid-item">
+                        <h5>({{ list.0.category }})</h5>
+                    </div>
+                    <div id="text" class="grid-item">
+                        <h5>Поточна ціна: {{ list.1 }}грн (Стартова ціна: {{ list.0.startprice }}грн)</h5>
+                    </div>
+                    <div class="grid-item">
+                        <img src="{{ list.0.photo }}" alt="{{ list.0.name }}" width="330" height="250">
+                    </div><br>
+                    <div class="grid-item">
+                        <a href="{% url 'auction' list.0.id %}" class="btn btn-primary active" role="button" data-bs-toggle="button">Детальна інформація</a><br>
+                    </div>
+                {% endif %} 
+            </div>
+        {% empty %}
+            <h5>Об'єктів цієї категорії ще немає</h5>
+        {% endfor %}
+    </div>
+{% endblock %}

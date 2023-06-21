@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %} 
+    <h2>Створити новий аукціон</h2> 
+    <p style="color:red">{{ message }}</p>
+    <form action="{% url 'new' %}" method="post">
+        {% csrf_token %}
+        <input class="form-control" type="text" name="name" placeholder="Назва"><br>
+        <textarea class="form-control" name="information" rows="10" cols="30"></textarea><br>
+        <input class="form-control" type="number" name="startprice" placeholder="Початкова цiна" min="1"><br>
+        <input class="form-control" type="url" name="photo" placeholder="ULR зображення"><br>
+ 
+        <select class="form-select" aria-label="Default select example" id="categories" name="categories" >
+            <option selected>Вибрати категорiю</option>
+            {% for category in categories %}
+                <option value={{ category }}>{{ category }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <div class="d-grid gap-2">
+            <input class="btn btn-primary"  type="submit" value="Створити новий лот"><br>
+        </div>
+    </form>
+{% endblock %}
